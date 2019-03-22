@@ -35,7 +35,7 @@ class Delivery(models.Model):
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     postal = models.TextField(max_length=32)
-    phone = models.IntegerField(max_length=16)
+    phone = models.IntegerField()
     date = models.DateField()
     time = models.TimeField()
     details = models.TextField(max_length=256)
