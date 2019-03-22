@@ -1,0 +1,8 @@
+__pycache__
+.idea
+.vscode
+node_modules
+package-lock.json
+project
+give_things_virtual
+local_settings.py
