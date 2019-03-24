@@ -22,5 +22,5 @@ class CustomUserCreationForm(forms.Form):
         data = self.cleaned_data['email']
         duplicate_users = User.objects.filter(email=data)
         if duplicate_users.exists():
-            raise forms.ValidationError("Adres e-mail juz istnieje")
+            raise forms.ValidationError("Taki adres e-mail juz istnieje")
         return data

@@ -3,7 +3,8 @@ from django.views import View
 from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from django.db import IntegrityError
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 # Create your views here.
@@ -27,3 +28,10 @@ class SignUp(View):
             success = "Konto zostalo stworzone"
             return render(request, 'register.html', {'form': form, 'success': success})
         return render(request, 'register.html', {'form': form})
+
+
+class Home(View):
+
+    def get(self, request):
+        user = request.user
+        return render(request, "form.html", {'user': user})

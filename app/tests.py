@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import tempfile
 from django.test import Client
 from django.urls import reverse
+from .forms import CustomUserCreationForm
 
 
 # Connection Tests
@@ -22,6 +23,32 @@ class ConnectionTest(unittest.TestCase):
     def test_register(self):
         response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
+
+
+# Form Tests
+
+class FormTest(unittest.TestCase):
+
+    def test_form_valid(self):
+        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
+                                            'password2': 'mkonjibhu', 'email': 'tester@mail.com'})
+        self.assertTrue(form.is_valid())
+
+    def test_form_password_length(self):
+        form = CustomUserCreationForm(data={'password1': 'mko',
+                                            'password2': 'mko', 'email': 'tester@mail.com'})
+        self.assertFalse(form.is_valid())
+
+    def test_form_password_invalid(self):
+        form = CustomUserCreationForm(data={'password1': 'mko000',
+                                            'password2': 'mk', 'email': 'tester@mail.com'})
+        self.assertFalse(form.is_valid())
+
+    def test_form_mail_invalid(self):
+        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
+                                            'password2': 'mkonjibhu', 'email': 'testermailwithoutat.com'})
+        self.assertFalse(form.is_valid())
+
 
 # Models Test
 
