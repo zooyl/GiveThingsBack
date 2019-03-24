@@ -8,10 +8,16 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=128, blank=False)
 
+    def __str__(self):
+        return self.name
+
 
 class Foundation(models.Model):
     name = models.CharField(max_length=128, blank=False)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name
 
 
 class GiveAway(models.Model):

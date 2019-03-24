@@ -26,5 +26,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('home/', app.views.Home.as_view(), name='home'),
+    path('settings/<pk>', app.views.Settings.as_view(), name='settings'),
+    path('change/password', app.views.ChangePassword.as_view(), name='change-password'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

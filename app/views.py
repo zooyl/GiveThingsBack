@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 # Create your views here.
@@ -36,3 +40,25 @@ class Home(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         return render(request, "form.html", {'user': user})
+
+
+class Settings(UpdateView):
+    model = User
+    fields = ['first_name', 'last_name']
+    success_url = reverse_lazy('home')
+
+
+class ChangePassword(View):
+
+    def get(self, request):
+        form = PasswordChangeForm(request.user)
+        return render(request, "change_password.html", {'form': form})
+
+    def post(self, request):
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            # Odswieza sesje z nowym haslem - uzytkownik nie musi sie ponownie logowac
+            update_session_auth_hash(request, form.user)
+            return redirect('home')
+        return render(request, "change_password.html", {'form': form})
