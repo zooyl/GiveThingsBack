@@ -7,6 +7,22 @@ from django.test import Client
 from django.urls import reverse
 
 
+# Connection Tests
+
+
+class ConnectionTest(unittest.TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_landing_page(self):
+        response = self.client.get(reverse('landing-page'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_register(self):
+        response = self.client.get(reverse('register'))
+        self.assertEqual(response.status_code, 200)
+
 # Models Test
 
 class ModelTest(django.test.TestCase):
@@ -86,15 +102,3 @@ class ModelTest(django.test.TestCase):
         self.assertEqual(test_user.siteuser.gathering.place, 'test_place')
         self.assertEqual(test_user.siteuser.donation.bags, 1)
         self.assertEqual(test_user.siteuser.donation.count, 0)
-
-    # Connection Tests
-
-
-class ConnectionTest(unittest.TestCase):
-
-    def setUp(self):
-        self.client = Client()
-
-    def test_landing_page(self):
-        response = self.client.get(reverse('landing-page'))
-        self.assertEqual(response.status_code, 200)
