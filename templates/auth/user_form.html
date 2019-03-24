@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="login-page">
+        <h2>Zaktualizuj informacje</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group" align="center">
+                {% csrf_token %}
+                <h1>{{ form.errors }}</h1>
+                <h1>Imie: {{ form.first_name }}</h1>
+                <h1>Nazwisko: {{ form.last_name }}</h1>
+                <a class="btn btn--without-border" href="{% url 'change-password' %}">Zmien haslo</a>
+                <input class="btn btn--without-border" type="submit" value="Zapisz">
+            </div>
+        </form>
+    </section>
+{% endblock content %}

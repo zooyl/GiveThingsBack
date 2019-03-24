@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -103,6 +105,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Instructions how to use it are in local_settings.py.txt file.
 
 try:
@@ -111,3 +116,6 @@ except ModuleNotFoundError:
     print("There is no database configuration in local_settings.py!")
     print("Fill valid data and try again!")
     exit(0)
+
+
+LOGOUT_REDIRECT_URL = 'landing-page'
