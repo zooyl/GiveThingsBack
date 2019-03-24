@@ -24,6 +24,13 @@ class ConnectionTest(unittest.TestCase):
         response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
 
+    def test_login(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout(self):
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 200)
 
 # Form Tests
 

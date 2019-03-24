@@ -6,7 +6,6 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
 # Create your views here.
 
 def landing_page(request):
@@ -30,7 +29,9 @@ class SignUp(View):
         return render(request, 'register.html', {'form': form})
 
 
-class Home(View):
+class Home(LoginRequiredMixin, View):
+    login_url = "login"
+    redirect_field_name = 'home'
 
     def get(self, request):
         user = request.user

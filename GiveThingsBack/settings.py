@@ -116,3 +116,6 @@ except ModuleNotFoundError:
     print("There is no database configuration in local_settings.py!")
     print("Fill valid data and try again!")
     exit(0)
+
+
+LOGOUT_REDIRECT_URL = 'landing-page'
