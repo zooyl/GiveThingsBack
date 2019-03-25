@@ -42,23 +42,23 @@ class ConnectionTest(unittest.TestCase):
 class FormTest(unittest.TestCase):
 
     def test_form_valid(self):
-        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
-                                            'password2': 'mkonjibhu', 'email': 'tester@mail.com'})
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7!',
+                                            'password2': 'Mkonjibhu7!', 'email': 'tester@mail.com'})
         self.assertTrue(form.is_valid())
 
     def test_form_password_length(self):
-        form = CustomUserCreationForm(data={'password1': 'mko',
-                                            'password2': 'mko', 'email': 'tester@mail.com'})
+        form = CustomUserCreationForm(data={'password1': '1234567',
+                                            'password2': '1234567', 'email': 'tester@mail.com'})
         self.assertFalse(form.is_valid())
 
-    def test_form_password_invalid(self):
-        form = CustomUserCreationForm(data={'password1': 'mko000',
-                                            'password2': 'mk', 'email': 'tester@mail.com'})
+    def test_form_password_without_special_sign(self):
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7',
+                                            'password2': 'Mkonjibhu7', 'email': 'tester@mail.com'})
         self.assertFalse(form.is_valid())
 
     def test_form_mail_invalid(self):
-        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
-                                            'password2': 'mkonjibhu', 'email': 'testermailwithoutat.com'})
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7!',
+                                            'password2': 'Mkonjibhu7!', 'email': 'testermailwithoutat.com'})
         self.assertFalse(form.is_valid())
 
 
@@ -156,7 +156,7 @@ class RegistrationViewTestCase(django.test.TestCase):
     def test_registration_view_post_success(self):
         response = self.client.post(reverse('register'),
                                     data={'email': 'test@test.com',
-                                          'password1': 'mkonjibhu', 'password2': 'mkonjibhu'})
+                                          'password1': 'Mkonjibhu7!', 'password2': 'Mkonjibhu7!'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), 1)
 
@@ -166,6 +166,5 @@ class RegistrationViewTestCase(django.test.TestCase):
                                           'password1': 'pass_to_fail', 'password2': 'mkonjibhu'})
         self.assertEqual(response.status_code, 200)
         self.failIf(response.context['form'].is_valid())
-        self.assertFormError(response, 'form', field=None, errors="Hasla nie sa takie same")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), 0)
