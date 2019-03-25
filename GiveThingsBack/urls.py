@@ -18,15 +18,29 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 import app.views
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, \
+    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 urlpatterns = [
-    path('', app.views.landing_page, name='landing-page'),
-    path('register/', app.views.SignUp.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('home/', app.views.Home.as_view(), name='home'),
-    path('settings/<pk>', app.views.Settings.as_view(), name='settings'),
-    path('change/password', app.views.ChangePassword.as_view(), name='change-password'),
-    path('admin/', admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('', app.views.landing_page, name='landing-page'),
+                  path('activate/<uidb64>/<token>', app.views.Activate.as_view(), name='activate'),
+                  path('register/', app.views.SignUp.as_view(), name='register'),
+                  path('login/', LoginView.as_view(), name='login'),
+                  path('logout/', LogoutView.as_view(), name='logout'),
+                  path('home/', app.views.Home.as_view(), name='home'),
+                  path('settings/<pk>', app.views.Settings.as_view(), name='settings'),
+                  path('change/password', app.views.ChangePassword.as_view(), name='change-password'),
+                  path('admin/', admin.site.urls),
+                  path('password/reset/',
+                       PasswordResetView.as_view(template_name='registration/password_reset_email.html'),
+                       name='password_reset'),
+                  path('password/reset/done',
+                       PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),
+                       name='password_reset_done'),
+                  path('password/reset/confirm/<uidb64>/<token>',
+                       PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'),
+                       name='password_reset_confirm'),
+                  path('password/reset/complete',
+                       PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
+                       name='password_reset_complete'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

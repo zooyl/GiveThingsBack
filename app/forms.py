@@ -1,6 +1,7 @@
 import django.forms as forms
 from django.core.validators import EmailValidator
 from django.contrib.auth.models import User
+import re
 
 
 class CustomUserCreationForm(forms.Form):
@@ -14,8 +15,12 @@ class CustomUserCreationForm(forms.Form):
         p2 = cleaned_data.get('password2')
         if p1 != p2:
             raise forms.ValidationError('Hasla nie sa takie same')
-        if len(p1) < 6:
-            raise forms.ValidationError("Haslo musi zawierac przynajmniej 6 znakow")
+        if len(p1) < 8:
+            raise forms.ValidationError("Haslo musi zawierac przynajmniej 8 znakow")
+        if not re.findall('[()[{}|`~!@#$%^&*,+=;:\'"<>./?]', p1):
+            raise forms.ValidationError("Haslo musi zawierac znak specjalny")
+        if not re.findall('[A-Z]', p1):
+            raise forms.ValidationError("Haslo musi zawierac wielka litere")
         return cleaned_data
 
     def clean_email(self):

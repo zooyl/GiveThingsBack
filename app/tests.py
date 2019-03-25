@@ -30,30 +30,35 @@ class ConnectionTest(unittest.TestCase):
 
     def test_logout(self):
         response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+
+    def test_change_password(self):
+        response = self.client.get(reverse('change-password'))
+        self.assertEqual(response.status_code, 302)
+
 
 # Form Tests
 
 class FormTest(unittest.TestCase):
 
     def test_form_valid(self):
-        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
-                                            'password2': 'mkonjibhu', 'email': 'tester@mail.com'})
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7!',
+                                            'password2': 'Mkonjibhu7!', 'email': 'tester@mail.com'})
         self.assertTrue(form.is_valid())
 
     def test_form_password_length(self):
-        form = CustomUserCreationForm(data={'password1': 'mko',
-                                            'password2': 'mko', 'email': 'tester@mail.com'})
+        form = CustomUserCreationForm(data={'password1': '1234567',
+                                            'password2': '1234567', 'email': 'tester@mail.com'})
         self.assertFalse(form.is_valid())
 
-    def test_form_password_invalid(self):
-        form = CustomUserCreationForm(data={'password1': 'mko000',
-                                            'password2': 'mk', 'email': 'tester@mail.com'})
+    def test_form_password_without_special_sign(self):
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7',
+                                            'password2': 'Mkonjibhu7', 'email': 'tester@mail.com'})
         self.assertFalse(form.is_valid())
 
     def test_form_mail_invalid(self):
-        form = CustomUserCreationForm(data={'password1': 'mkonjibhu',
-                                            'password2': 'mkonjibhu', 'email': 'testermailwithoutat.com'})
+        form = CustomUserCreationForm(data={'password1': 'Mkonjibhu7!',
+                                            'password2': 'Mkonjibhu7!', 'email': 'testermailwithoutat.com'})
         self.assertFalse(form.is_valid())
 
 
@@ -136,3 +141,30 @@ class ModelTest(django.test.TestCase):
         self.assertEqual(test_user.siteuser.gathering.place, 'test_place')
         self.assertEqual(test_user.siteuser.donation.bags, 1)
         self.assertEqual(test_user.siteuser.donation.count, 0)
+
+
+class RegistrationViewTestCase(django.test.TestCase):
+
+    def test_registration_view_get(self):
+        response = self.client.get(reverse('register'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'register.html')
+        self.failUnless(isinstance(response.context['form'],
+                                   CustomUserCreationForm))
+
+    def test_registration_view_post_success(self):
+        response = self.client.post(reverse('register'),
+                                    data={'email': 'test@test.com',
+                                          'password1': 'Mkonjibhu7!', 'password2': 'Mkonjibhu7!'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_registration_view_post_failure(self):
+        response = self.client.post(reverse('register'),
+                                    data={'email': 'test@test.com',
+                                          'password1': 'pass_to_fail', 'password2': 'mkonjibhu'})
+        self.assertEqual(response.status_code, 200)
+        self.failIf(response.context['form'].is_valid())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.count(), 0)
