@@ -30,7 +30,12 @@ class ConnectionTest(unittest.TestCase):
 
     def test_logout(self):
         response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+
+    def test_change_password(self):
+        response = self.client.get(reverse('change-password'))
+        self.assertEqual(response.status_code, 302)
+
 
 # Form Tests
 
@@ -136,3 +141,31 @@ class ModelTest(django.test.TestCase):
         self.assertEqual(test_user.siteuser.gathering.place, 'test_place')
         self.assertEqual(test_user.siteuser.donation.bags, 1)
         self.assertEqual(test_user.siteuser.donation.count, 0)
+
+
+class RegistrationViewTestCase(django.test.TestCase):
+
+    def test_registration_view_get(self):
+        response = self.client.get(reverse('register'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'register.html')
+        self.failUnless(isinstance(response.context['form'],
+                                   CustomUserCreationForm))
+
+    def test_registration_view_post_success(self):
+        response = self.client.post(reverse('register'),
+                                    data={'email': 'test@test.com',
+                                          'password1': 'mkonjibhu', 'password2': 'mkonjibhu'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.count(), 1)
+
+    def test_registration_view_post_failure(self):
+        response = self.client.post(reverse('register'),
+                                    data={'email': 'test@test.com',
+                                          'password1': 'pass_to_fail', 'password2': 'mkonjibhu'})
+        self.assertEqual(response.status_code, 200)
+        self.failIf(response.context['form'].is_valid())
+        self.assertFormError(response, 'form', field=None, errors="Hasla nie sa takie same")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.count(), 0)

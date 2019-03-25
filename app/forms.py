@@ -14,8 +14,8 @@ class CustomUserCreationForm(forms.Form):
         p2 = cleaned_data.get('password2')
         if p1 != p2:
             raise forms.ValidationError('Hasla nie sa takie same')
-        if len(p1) < 6:
-            raise forms.ValidationError("Haslo musi zawierac przynajmniej 6 znakow")
+        if len(p1) < 8:
+            raise forms.ValidationError("Haslo musi zawierac przynajmniej 8 znakow")
         return cleaned_data
 
     def clean_email(self):

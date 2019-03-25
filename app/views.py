@@ -42,13 +42,15 @@ class Home(LoginRequiredMixin, View):
         return render(request, "form.html", {'user': user})
 
 
-class Settings(UpdateView):
+class Settings(LoginRequiredMixin, UpdateView):
+    login_url = "login"
     model = User
     fields = ['first_name', 'last_name']
     success_url = reverse_lazy('home')
 
 
-class ChangePassword(View):
+class ChangePassword(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         form = PasswordChangeForm(request.user)
