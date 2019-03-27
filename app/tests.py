@@ -1,6 +1,6 @@
 import unittest
 import django.test.testcases
-from .models import Category, Foundation, GiveAway, Gathering, Delivery, AdditionalInfo, SiteUser
+from .models import Category, Foundation, GiveAway, Gathering, AdditionalInfo, SiteUser
 from django.contrib.auth.models import User
 import tempfile
 from django.test import Client

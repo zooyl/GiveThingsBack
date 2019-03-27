@@ -1,0 +1,57 @@
+{% extends 'form.html' %}
+{% block f5 %}
+<form method="post">{% csrf_token %}
+                <!-- STEP 6 -->
+            <div data-step="1" class="active">
+                <h3>Podsumowanie Twojej darowizny</h3>
+
+                <div class="summary">
+                    <div class="form-section">
+                        <h4>Oddajesz:</h4>
+                        <ul>
+                            <li>
+                                <span class="icon icon-bag"></span>
+                                <span class="summary--text"
+                                >{{ bags }} worki w kategorii ''{{ category }}''</span
+                                >
+                            </li>
+
+                            <li>
+                                <span class="icon icon-hand"></span>
+                                <span class="summary--text"
+                                >Dla "{{ foundation }}"</span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="form-section form-section--columns">
+                        <div class="form-section--column">
+                            <h4>Adres odbioru:</h4>
+                            <ul>
+                                <li>{{ street }}</li>
+                                <li>{{ city }}</li>
+                                <li>{{ postal }}</li>
+                                <li>{{ phone }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="form-section--column">
+                            <h4>Termin odbioru:</h4>
+                            <ul>
+                                <li>{{ date }}</li>
+                                <li>{{ time }}</li>
+                                <h4>Uwagi: </h4>
+                                <li>{{ details }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-group--buttons">
+{#                    <button type="button" class="btn prev-step">Wstecz</button>#}
+                    <input type="submit" class="btn" value="Potwierdzam">
+                </div>
+            </div>
+</form>
+{% endblock f5 %}

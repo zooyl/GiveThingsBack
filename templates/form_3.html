@@ -1,0 +1,31 @@
+{% extends 'form.html' %}
+{% block f3 %}
+    <div class="form--steps-container">
+        <div class="form--steps-counter">Krok <span>3</span>/5</div>
+<form method="post">{% csrf_token %}
+
+    <!-- STEP 4 -->
+    <div data-step="1" class="active">
+        <h3>Wybierz organizacje, której chcesz pomóc:</h3>
+        {% for i in foundation %}
+        <div class="form-group form-group--checkbox">
+            <label>
+                <input type="radio" name="foundation" value="{{ i.name }}"/>
+                <span class="checkbox radio"></span>
+                <span class="description">
+                  <div class="title">{{ i.name }}</div>
+                  <div class="subtitle">
+                    Cel i misja: {{ i.description }}
+                  </div>
+                </span>
+            </label>
+        </div>
+        {% endfor %}
+
+        <div class="form-group form-group--buttons">
+{#            <button type="button" class="btn prev-step">Wstecz</button>#}
+            <input type="submit" class="btn" value="Dalej">
+        </div>
+    </div>
+</form>
+        {% endblock f3 %}
