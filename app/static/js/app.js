@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
   class FormSteps {
     constructor(form) {
       this.$form = form;
-      this.$next = form.querySelectorAll(".next-step");
+      // this.$next = form.querySelectorAll(".next-step");
       this.$prev = form.querySelectorAll(".prev-step");
       this.$step = form.querySelector(".form--steps-counter span");
       this.currentStep = 1;

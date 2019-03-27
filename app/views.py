@@ -1,24 +1,18 @@
-from django.shortcuts import render, redirect
 from django.views import View
 from .forms import CustomUserCreationForm
+from .models import Category
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-
-from django.contrib.auth import login
-from django.utils.encoding import force_text
+from django.contrib.auth import update_session_auth_hash, login
+from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode
-
 from .tokens import account_activation_token
-
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
-from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 
@@ -41,7 +35,7 @@ class SignUp(View):
             hashed_pass = make_password(form.cleaned_data['password1'])
             new = User.objects.create(username=form.cleaned_data['email'], email=form.cleaned_data['email'],
                                       password=hashed_pass)
-            # test maila
+            # Set user to inactive and send him e-mail with activation link
             new.is_active = False
             new.save()
 
@@ -84,7 +78,7 @@ class Home(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        return render(request, "form.html", {'user': user})
+        return render(request, "form_oryg.html", {'user': user})
 
 
 class Settings(LoginRequiredMixin, UpdateView):
@@ -109,3 +103,16 @@ class ChangePassword(LoginRequiredMixin, View):
             update_session_auth_hash(request, form.user)
             return redirect('home')
         return render(request, "change_password.html", {'form': form})
+
+
+class GiveawayForm_1(View):
+
+    def get(self, request):
+        category = Category.objects.all()
+        return render(request, 'form_1.html', {'category': category})
+
+
+    def post(self, request):
+        category = request.POST['category']
+        request.session['category'] = category
+        return redirect('form2')
