@@ -1,6 +1,6 @@
 from django.views import View
 from .forms import CustomUserCreationForm
-from .models import Category
+from .models import Category, Foundation, SiteUser, GiveAway
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -111,8 +111,99 @@ class GiveawayForm_1(View):
         category = Category.objects.all()
         return render(request, 'form_1.html', {'category': category})
 
-
     def post(self, request):
         category = request.POST['category']
         request.session['category'] = category
         return redirect('form2')
+
+
+class GiveawayForm_2(View):
+
+    def get(self, request):
+        return render(request, 'form_2.html')
+
+    def post(self, request):
+        bags = request.POST['bags']
+        request.session['bags'] = bags
+        return redirect('form3')
+
+
+class GiveawayForm_3(View):
+
+    def get(self, request):
+        foundation = Foundation.objects.all()
+        return render(request, 'form_3.html', {'foundation': foundation})
+
+    def post(self, request):
+        foundation = request.POST['foundation']
+        request.session['foundation'] = foundation
+        return redirect('form4')
+
+
+class GiveawayForm_4(View):
+
+    def get(self, request):
+        return render(request, 'form_4.html')
+
+    def post(self, request):
+        street = request.POST['street']
+        city = request.POST['city']
+        postal = request.POST['postal']
+        phone = request.POST['phone']
+        date = request.POST['date']
+        time = request.POST['time']
+        details = request.POST['details']
+        request.session['street'] = street
+        request.session['city'] = city
+        request.session['postal'] = postal
+        request.session['phone'] = phone
+        request.session['date'] = date
+        request.session['time'] = time
+        request.session['details'] = details
+        return redirect('form5')
+
+
+class GiveawayForm_5(View):
+
+    def get(self, request):
+        category = request.session.get('category')
+        bags = request.session.get('bags')
+        foundation = request.session.get('foundation')
+        street = request.session.get('street')
+        city = request.session.get('city')
+        postal = request.session.get('postal')
+        phone = request.session.get('phone')
+        date = request.session.get('date')
+        time = request.session.get('time')
+        details = request.session.get('details')
+        return render(request, 'form_5.html', {
+            'category': category,
+            'bags': bags,
+            'foundation': foundation,
+            'street': street,
+            'city': city,
+            'postal': postal,
+            'phone': phone,
+            'date': date,
+            'time': time,
+            'details': details
+        })
+
+    def post(self, request):
+        user = request.user
+        category = Category.objects.get(name=request.session.get('category'))
+        foundation = Foundation.objects.get(name=request.session.get('foundation'))
+        new_giveaway = GiveAway.objects.create(category=category,
+                                               bags=request.session.get('bags'),
+                                               foundation=foundation)
+        SiteUser.objects.create(user=user, donation=new_giveaway, street=request.session.get('street'),
+                                city=request.session.get('city'), postal=request.session.get('postal'),
+                                phone=request.session.get('phone'), date=request.session.get('date'),
+                                time=request.session.get('time'), details=request.session.get('details'))
+        return redirect('form6')
+
+
+class GiveawayForm_6(View):
+
+    def get(self, request):
+        return render(request, 'form_6.html')

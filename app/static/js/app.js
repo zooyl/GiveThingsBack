@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
     constructor(form) {
       this.$form = form;
       // this.$next = form.querySelectorAll(".next-step");
-      this.$prev = form.querySelectorAll(".prev-step");
+      // this.$prev = form.querySelectorAll(".prev-step");
       this.$step = form.querySelector(".form--steps-counter span");
       this.currentStep = 1;
 
