@@ -1,5 +1,7 @@
 {% extends 'form.html' %}
 {% block f5 %}
+    <div class="form--steps-container">
+    <div class="form--steps-counter">Krok <span>5</span>/5</div>
 <form method="post">{% csrf_token %}
                 <!-- STEP 6 -->
             <div data-step="1" class="active">

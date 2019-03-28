@@ -50,7 +50,7 @@
             </h1>
 
             <ul class="slogan--buttons">
-                <li><a href="#" class="btn btn--large">Oddaj rzeczy</a></li>
+                <li><a href="{% url 'form1' %}" class="btn btn--large">Oddaj rzeczy</a></li>
                 <li><a href="#" class="btn btn--large">Zorganizuj zbiórkę</a></li>
             </ul>
         </div>
@@ -60,14 +60,14 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>10</em>
+            <em>{{ bags }}</em>
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
                 tempora!</p>
         </div>
 
         <div class="stats--item">
-            <em>5</em>
+            <em>{{ foundation_count }}</em>
             <h3>Wspartych organizacji</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
                 quam.</p>
@@ -134,42 +134,42 @@
     <div class="help--slides active" data-id="1">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się
             zajmują, komu pomagają i czego potrzebują.</p>
-
+        {% for i in foundation %}
         <ul class="help--slides-items">
             <li>
                 <div class="col">
-                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
-                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
+                    <div class="title">{{ i.name }}</div>
+                    <div class="subtitle">Cel i misja: {{ i.description }}.</div>
                 </div>
 
                 <div class="col">
-                    <div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div>
+                    <div class="text">Lorem ipsum dolor sit amet consectetur.</div>
                 </div>
             </li>
-
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja “Dla dzieci"</div>
-                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
-                </div>
-
-                <div class="col">
-                    <div class="text">ubrania, meble, zabawki</div>
-                </div>
-            </li>
-
-            <li>
-                <div class="col">
-                    <div class="title">Fundacja “Bez domu”</div>
-                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
-                </div>
-
-                <div class="col">
-                    <div class="text">ubrania, jedzenie, ciepłe koce</div>
-                </div>
+{##}
+{#            <li>#}
+{#                <div class="col">#}
+{#                    <div class="title">Fundacja “Dla dzieci"</div>#}
+{#                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>#}
+{#                </div>#}
+{##}
+{#                <div class="col">#}
+{#                    <div class="text">ubrania, meble, zabawki</div>#}
+{#                </div>#}
+{#            </li>#}
+{##}
+{#            <li>#}
+{#                <div class="col">#}
+{#                    <div class="title">Fundacja “Bez domu”</div>#}
+{#                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>#}
+{#                </div>#}
+{##}
+{#                <div class="col">#}
+{#                    <div class="text">ubrania, jedzenie, ciepłe koce</div>#}
+{#                </div>#}
             </li>
         </ul>
-
+        {% endfor %}
         <ul class="help--slides-pagination">
             <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
             <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
