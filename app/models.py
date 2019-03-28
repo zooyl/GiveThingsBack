@@ -36,7 +36,7 @@ class AdditionalInfo(models.Model):
 
 
 class SiteUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     donation = models.ForeignKey(GiveAway, on_delete=models.CASCADE)
 
     street = models.CharField(max_length=128, blank=True)

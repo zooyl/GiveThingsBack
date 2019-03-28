@@ -15,12 +15,18 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
+from django.db.models import Sum
 
 
 # Create your views here.
 
 def landing_page(request):
-    return render(request, "index.html")
+    # it sum entire column, display it as a list. So values [0] print only number
+    bags = list(GiveAway.objects.aggregate(Sum('bags')).values())[0]
+    foundation_count = GiveAway.objects.values('foundation_id').distinct().count()
+    foundation = Foundation.objects.all()
+    return render(request, "index.html", {'bags': bags, 'foundation_count': foundation_count,
+                                          'foundation': foundation})
 
 
 class SignUp(View):
@@ -99,13 +105,13 @@ class ChangePassword(LoginRequiredMixin, View):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            # Odswieza sesje z nowym haslem - uzytkownik nie musi sie ponownie logowac
+            # Refresh session with new password - user doesnt have to log in again
             update_session_auth_hash(request, form.user)
             return redirect('home')
         return render(request, "change_password.html", {'form': form})
 
 
-class GiveawayForm_1(View):
+class GiveawayForm1(View):
 
     def get(self, request):
         category = Category.objects.all()
@@ -117,7 +123,7 @@ class GiveawayForm_1(View):
         return redirect('form2')
 
 
-class GiveawayForm_2(View):
+class GiveawayForm2(View):
 
     def get(self, request):
         return render(request, 'form_2.html')
@@ -128,7 +134,7 @@ class GiveawayForm_2(View):
         return redirect('form3')
 
 
-class GiveawayForm_3(View):
+class GiveawayForm3(View):
 
     def get(self, request):
         foundation = Foundation.objects.all()
@@ -140,7 +146,7 @@ class GiveawayForm_3(View):
         return redirect('form4')
 
 
-class GiveawayForm_4(View):
+class GiveawayForm4(View):
 
     def get(self, request):
         return render(request, 'form_4.html')
@@ -163,7 +169,7 @@ class GiveawayForm_4(View):
         return redirect('form5')
 
 
-class GiveawayForm_5(View):
+class GiveawayForm5(View):
 
     def get(self, request):
         category = request.session.get('category')
@@ -196,14 +202,26 @@ class GiveawayForm_5(View):
         new_giveaway = GiveAway.objects.create(category=category,
                                                bags=request.session.get('bags'),
                                                foundation=foundation)
+        new_giveaway.count += 1
+        new_giveaway.save()
         SiteUser.objects.create(user=user, donation=new_giveaway, street=request.session.get('street'),
                                 city=request.session.get('city'), postal=request.session.get('postal'),
                                 phone=request.session.get('phone'), date=request.session.get('date'),
-                                time=request.session.get('time'), details=request.session.get('details'))
+                                details=request.session.get('details'))
+        del request.session['category']
+        del request.session['bags']
+        del request.session['foundation']
+        del request.session['street']
+        del request.session['city']
+        del request.session['postal']
+        del request.session['phone']
+        del request.session['date']
+        del request.session['time']
+        del request.session['details']
         return redirect('form6')
 
 
-class GiveawayForm_6(View):
+class GiveawayForm6(View):
 
     def get(self, request):
         return render(request, 'form_6.html')
