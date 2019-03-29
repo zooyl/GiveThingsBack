@@ -84,8 +84,8 @@ class Home(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        siteuser = SiteUser.objects.filter(user_id=user.id)
-        return render(request, "summary.html", {'user': user, 'site': siteuser})
+        site_user = SiteUser.objects.filter(user_id=user.id).order_by('-donation__status', '-donation__created')
+        return render(request, "summary.html", {'user': user, 'site': site_user})
 
 
 class Settings(LoginRequiredMixin, UpdateView):
@@ -112,7 +112,8 @@ class ChangePassword(LoginRequiredMixin, View):
         return render(request, "change_password.html", {'form': form})
 
 
-class GiveawayForm1(View):
+class GiveawayForm1(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         category = Category.objects.all()
@@ -124,7 +125,8 @@ class GiveawayForm1(View):
         return redirect('form2')
 
 
-class GiveawayForm2(View):
+class GiveawayForm2(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         return render(request, 'form_2.html')
@@ -135,7 +137,8 @@ class GiveawayForm2(View):
         return redirect('form3')
 
 
-class GiveawayForm3(View):
+class GiveawayForm3(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         foundation = Foundation.objects.all()
@@ -147,7 +150,8 @@ class GiveawayForm3(View):
         return redirect('form4')
 
 
-class GiveawayForm4(View):
+class GiveawayForm4(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         return render(request, 'form_4.html')
@@ -170,7 +174,8 @@ class GiveawayForm4(View):
         return redirect('form5')
 
 
-class GiveawayForm5(View):
+class GiveawayForm5(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         category = request.session.get('category')
@@ -222,7 +227,8 @@ class GiveawayForm5(View):
         return redirect('form6')
 
 
-class GiveawayForm6(View):
+class GiveawayForm6(LoginRequiredMixin, View):
+    login_url = "login"
 
     def get(self, request):
         return render(request, 'form_6.html')

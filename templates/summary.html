@@ -1,33 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
     <header class="header--main-page">
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Witaj {{ user }}!<br/>
-                Ponizej znajdziesz liste swoich statystyk
-            </h1>
+        <div class="slogan container container--90">
+            <div class="slogan--item">
+                <h1>
+                    Witaj {{ user }}!<br/>
+                    Ponizej znajdziesz liste swoich statystyk
+                </h1>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
     <section class="help">
-    <h2>Komu pomogles?</h2>
-    <div class="help--slides active" data-id="1">
-        <p>Oto lista wszystkich zorganizowanych zbiorek oraz oddanych rzeczy</p>
-        {% for i in site %}
+        <h2>Komu pomogles?</h2>
+        <div class="help--slides active" data-id="1">
+            <p>Oto lista wszystkich zorganizowanych zbiorek oraz oddanych rzeczy</p>
             <ul class="help--slides-items">
                 <li>
-                    <div class="col">
-                        <div class="title">{{ i.donation.foundation }}</div>
-                        <div class="subtitle">Ilosc workow: {{ i.donation.bags }}.</div>
-                    </div>
-
-                    <div class="col">
-                        <div class="text">{{ i.donation.category }}</div>
-                    </div>
+                <h1>Fundacja</h1>
+                <h1>Status</h1>
+                <h1>Data stworzenia</h1>
                 </li>
             </ul>
-        {% endfor %}
-    </div>
+            {% for i in site %}
+                <ul class="help--slides-items">
+                    <li>
+                        <div class="col">
+                            <div class="title">{{ forloop.counter }}. "{{ i.donation.foundation }}"</div>
+                        </div>
+
+                        <div class="col">
+                            {% if i.donation.status == False %}
+                                <div class="title">Nie odebrany</div>
+                            {% else %}
+                                <div class="title">Odebrany</div>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            <div class="title">{{ i.donation.created }}</div>
+                        </div>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
     </section>
 {% endblock content %}

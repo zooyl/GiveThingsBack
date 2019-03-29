@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
 
 
 # Create your models here.
@@ -27,6 +26,8 @@ class GiveAway(models.Model):
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     bags = models.IntegerField(default=1)
     foundation = models.ForeignKey(Foundation, null=True, on_delete=models.SET_NULL)
+    status = models.BooleanField(default=False)
+    created = models.DateField(auto_now_add=True)
 
 
 class AdditionalInfo(models.Model):
@@ -38,7 +39,6 @@ class AdditionalInfo(models.Model):
 class SiteUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     donation = models.ForeignKey(GiveAway, on_delete=models.CASCADE)
-
     street = models.CharField(max_length=128, blank=True)
     city = models.CharField(max_length=128, blank=True)
     postal = models.TextField(max_length=32, blank=True)
