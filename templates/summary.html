@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <header class="header--main-page">
+    <div class="slogan container container--90">
+        <div class="slogan--item">
+            <h1>
+                Witaj {{ user }}!<br/>
+                Ponizej znajdziesz liste swoich statystyk
+            </h1>
+        </div>
+    </div>
+</header>
+    <section class="help">
+    <h2>Komu pomogles?</h2>
+    <div class="help--slides active" data-id="1">
+        <p>Oto lista wszystkich zorganizowanych zbiorek oraz oddanych rzeczy</p>
+        {% for i in site %}
+            <ul class="help--slides-items">
+                <li>
+                    <div class="col">
+                        <div class="title">{{ i.donation.foundation }}</div>
+                        <div class="subtitle">Ilosc workow: {{ i.donation.bags }}.</div>
+                    </div>
+
+                    <div class="col">
+                        <div class="text">{{ i.donation.category }}</div>
+                    </div>
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+    </section>
+{% endblock content %}

@@ -84,7 +84,8 @@ class Home(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        return render(request, "form_oryg.html", {'user': user})
+        siteuser = SiteUser.objects.filter(user_id=user.id)
+        return render(request, "summary.html", {'user': user, 'site': siteuser})
 
 
 class Settings(LoginRequiredMixin, UpdateView):
