@@ -17,7 +17,7 @@
                 <ul class="dropdown">
                     <li class="btn--without-border"><a href="#">Profil</a></li>
                     <li class="btn--without-border"><a href="{% url 'settings' pk=user.pk %}">Ustawienia</a></li>
-                    <li class="btn--without-border"><a href="#">Moje zbiórki</a></li>
+                    <li class="btn--without-border"><a href="{% url 'home' %}">Moje zbiórki</a></li>
                     <li class="btn--without-border"><a href="{% url 'logout' %}">Wyloguj</a></li>
                 </ul>
             </li>

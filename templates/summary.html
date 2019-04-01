@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+    <header class="header--main-page">
+        <div class="slogan container container--90">
+            <div class="slogan--item">
+                <h1>
+                    Witaj {{ user }}!<br/>
+                    Ponizej znajdziesz liste swoich statystyk
+                </h1>
+            </div>
+        </div>
+    </header>
+    <section class="help">
+        <h2>Komu pomogles?</h2>
+        <div class="help--slides active" data-id="1">
+            <p>Oto lista wszystkich Twoich zorganizowanych zbiorek oraz oddanych rzeczy</p>
+            <ul class="help--slides-items">
+                <li>
+                    <h1>Fundacja</h1>
+                    <h1>Status</h1>
+                    <h1>Data stworzenia</h1>
+                </li>
+            </ul>
+            {% for i in site %}
+                {% if i.donation.archived == False %}
+                    <ul class="help--slides-items">
+                    <li>
+                    <div class="col">
+                        <a href="/details/{{ i.id }}">
+                            <div class="title">"{{ i.donation.foundation }}"</div>
+                        </a>
+                    </div>
+                    <div class="col">
+                        {% if i.donation.status == False %}
+                            <div class="title">Nie odebrany</div>
+                        {% else %}
+                            <div class="title">Odebrany</div>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <div class="title">{{ i.donation.created }}</div>
+                    </div>
+                {% endif %}
+            </li>
+            </ul>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}
