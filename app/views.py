@@ -208,8 +208,6 @@ class GiveawayForm5(LoginRequiredMixin, View):
         new_giveaway = GiveAway.objects.create(category=category,
                                                bags=request.session.get('bags'),
                                                foundation=foundation)
-        new_giveaway.count += 1
-        new_giveaway.save()
         SiteUser.objects.create(user=user, donation=new_giveaway, street=request.session.get('street'),
                                 city=request.session.get('city'), postal=request.session.get('postal'),
                                 phone=request.session.get('phone'), date=request.session.get('date'),
@@ -232,3 +230,18 @@ class GiveawayForm6(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, 'form_6.html')
+
+
+class Details(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request, id):
+        details = SiteUser.objects.get(donation_id=id)
+        return render(request, "details.html", {'details': details})
+
+    def post(self, request, id):
+        details = SiteUser.objects.get(donation_id=id)
+        details.donation.archived = True
+        details.donation.save()
+        success_arch = "Darowizna zarchiwizowana"
+        return render(request, 'success.html', {'success_arch': success_arch})

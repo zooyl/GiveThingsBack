@@ -22,12 +22,12 @@ class Foundation(models.Model):
 
 
 class GiveAway(models.Model):
-    count = models.IntegerField(default=0)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     bags = models.IntegerField(default=1)
     foundation = models.ForeignKey(Foundation, null=True, on_delete=models.SET_NULL)
     status = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True)
+    archived = models.BooleanField(default=False)
 
 
 class AdditionalInfo(models.Model):
@@ -49,7 +49,6 @@ class SiteUser(models.Model):
 
 
 class Gathering(models.Model):
-    count = models.IntegerField(default=0)
     place = models.CharField(max_length=128)
     goal = models.CharField(max_length=128)
     needed = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
