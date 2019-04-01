@@ -72,7 +72,7 @@ class Activate(View):
             user.is_active = True
             user.save()
             login(request, user)
-            return redirect('home')
+            return redirect('landing-page')
         else:
             fail = "Link jest nieprawidlowy. Konto nie zostalo aktywowane"
             return render(request, 'registration/invalid.html', {'fail': fail})
