@@ -51,4 +51,8 @@ urlpatterns = [
                   path('form/6', app.views.GiveawayForm6.as_view(), name='form6'),
                   path('details/<int:id>', app.views.Details.as_view(), name='details'),
                   path('foundation/', app.views.FoundationList.as_view(), name='foundation'),
+                  path('gathering/', app.views.Gathering1.as_view(),
+                       name='gathering'),
+                  path('gathering/2', app.views.Gathering2.as_view(),
+                       name='gathering2'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

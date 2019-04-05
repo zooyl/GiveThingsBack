@@ -1,6 +1,6 @@
 from django.views import View
 from .forms import CustomUserCreationForm
-from .models import Category, Foundation, SiteUser, GiveAway
+from .models import Category, Foundation, SiteUser, GiveAway, Gathering
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.db.models import Sum
+from app.forms import GatheringForm1, GatheringForm2
 
 
 # Create your views here.
@@ -252,3 +253,41 @@ class FoundationList(View):
     def get(self, request):
         foundation = Foundation.objects.order_by('name')
         return render(request, 'foundation_list.html', {'foundation': foundation})
+
+
+class Gathering1(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        form = GatheringForm1
+        return render(request, 'gathering.html', {'form': form})
+
+    def post(self, request):
+        form = GatheringForm1(request.POST)
+        if form.is_valid():
+            place = form.cleaned_data['place']
+            request.session['place'] = place
+            goal = form.cleaned_data['goal']
+            request.session['goal'] = goal
+            needed = form.cleaned_data['needed']
+            request.session['needed'] = needed.id
+            return redirect('gathering2')
+        return render(request, 'gathering.html', {'form': form})
+
+
+class Gathering2(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        form = GatheringForm2
+        return render(request, 'gathering2.html', {'form': form})
+
+    def post(self, request):
+        form = GatheringForm2(request.POST)
+        if form.is_valid():
+            Gathering.objects.create(place=request.session.get('place'), goal=request.session.get('goal'),
+                                     needed_id=request.session.get('needed'), time=form.cleaned_data['time'],
+                                     description=form.cleaned_data['description'],
+                                     photo=form.cleaned_data['photo'], person_id=request.user.id)
+            return redirect('home')
+        return render(request, 'gathering2.html', {'form': form})
