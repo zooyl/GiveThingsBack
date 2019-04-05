@@ -245,3 +245,10 @@ class Details(LoginRequiredMixin, View):
         details.donation.save()
         success_arch = "Darowizna zarchiwizowana"
         return render(request, 'success.html', {'success_arch': success_arch})
+
+
+class FoundationList(View):
+
+    def get(self, request):
+        foundation = Foundation.objects.order_by('name')
+        return render(request, 'foundation_list.html', {'foundation': foundation})
