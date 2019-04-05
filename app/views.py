@@ -24,10 +24,11 @@ from app.forms import GatheringForm1, GatheringForm2
 def landing_page(request):
     # it sum entire column, display it as a list. So values [0] print only number
     bags = list(GiveAway.objects.aggregate(Sum('bags')).values())[0]
+    gathering = Gathering.objects.count()
     foundation_count = GiveAway.objects.values('foundation_id').distinct().count()
     foundation = Foundation.objects.all()
     return render(request, "index.html", {'bags': bags, 'foundation_count': foundation_count,
-                                          'foundation': foundation})
+                                          'foundation': foundation, 'gathering': gathering})
 
 
 class SignUp(View):
@@ -85,8 +86,9 @@ class Home(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
+        gathering = Gathering.objects.filter(person_id=user.id).order_by('-time')
         site_user = SiteUser.objects.filter(user_id=user.id).order_by('-donation__status', '-donation__created')
-        return render(request, "summary.html", {'user': user, 'site': site_user})
+        return render(request, "summary.html", {'user': user, 'site': site_user, 'gathering': gathering})
 
 
 class Settings(LoginRequiredMixin, UpdateView):
