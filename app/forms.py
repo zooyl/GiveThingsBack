@@ -41,4 +41,4 @@ class GatheringForm1(forms.ModelForm):
 class GatheringForm2(forms.ModelForm):
     class Meta:
         model = Gathering
-        fields = ['time', 'description', 'photo']
+        fields = ['time', 'description']

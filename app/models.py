@@ -54,5 +54,4 @@ class Gathering(models.Model):
     needed = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     time = models.DateField()
     description = models.CharField(max_length=256)
-    photo = models.ImageField(blank=True)
     person = models.ForeignKey(SiteUser, on_delete=models.CASCADE)

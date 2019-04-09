@@ -289,7 +289,14 @@ class Gathering2(LoginRequiredMixin, View):
         if form.is_valid():
             Gathering.objects.create(place=request.session.get('place'), goal=request.session.get('goal'),
                                      needed_id=request.session.get('needed'), time=form.cleaned_data['time'],
-                                     description=form.cleaned_data['description'],
-                                     photo=form.cleaned_data['photo'], person_id=request.user.id)
+                                     description=form.cleaned_data['description'], person_id=request.user.id)
             return redirect('home')
         return render(request, 'gathering2.html', {'form': form})
+
+
+class GatheringDetails(LoginRequiredMixin, View):
+    login_url = 'login'
+
+    def get(self, request, id):
+        details = Gathering.objects.get(id=id)
+        return render(request, "gathering-details.html", {'details': details})

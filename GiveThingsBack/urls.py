@@ -55,4 +55,6 @@ urlpatterns = [
                        name='gathering'),
                   path('gathering/2', app.views.Gathering2.as_view(),
                        name='gathering2'),
+                  path('gathering/details/<int:id>', app.views.GatheringDetails.as_view(),
+                       name='gathering-details'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
