@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from GiveThingsBack.local_settings import SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -106,29 +105,42 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = 'media/'
+LOGOUT_REDIRECT_URL = 'landing-page'
+
+# for deployment settings
+SECRET_KEY = os.environ.get('GTB_SECRET_KEY')
 
 # Instructions how to use it are in local_settings.py.txt file.
 
-try:
-    from GiveThingsBack.local_settings import DATABASES
-except ModuleNotFoundError:
-    print("There is no database configuration in local_settings.py!")
-    print("Fill valid data and try again!")
-    exit(0)
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-LOGOUT_REDIRECT_URL = 'landing-page'
+# DOCKER DB
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db'
+    }
+}
+
+# LOCAL DB
+# from GiveThingsBack.local_settings import DATABASES
+
+# LOCAL SETTINGS
+
+# from GiveThingsBack.local_settings import SECRET_KEY
 
 # Email Service:
 # It won't work until you setup your e-mail and password correctly and if user is not in database
 # Change "EMAIL_HOST" if you are using other services than google
 
-from .local_settings import email, email_pass
+# from .local_settings import email, email_pass
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = email
-EMAIL_HOST_PASSWORD = email_pass
+EMAIL_HOST_USER = os.environ.get('EMAIL')  # email for local
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')  # email_pass for local
