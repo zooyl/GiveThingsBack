@@ -2,7 +2,6 @@ import unittest
 import django.test.testcases
 from .models import Category, Foundation, GiveAway, Gathering, AdditionalInfo, SiteUser
 from django.contrib.auth.models import User
-import tempfile
 from django.test import Client
 from django.urls import reverse
 from .forms import CustomUserCreationForm
@@ -68,7 +67,6 @@ class ModelTest(django.test.TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        image = tempfile.NamedTemporaryFile(suffix=".jpg").name
         Category.objects.create(name="test_category")
         Foundation.objects.create(name="test_foundation", category_id=1)
         GiveAway.objects.create(category_id=1, foundation_id=1)
@@ -77,8 +75,7 @@ class ModelTest(django.test.TestCase):
         AdditionalInfo.objects.create(instruction="instructions_test")
         SiteUser.objects.create(user_id=1, donation_id=1)
         Gathering.objects.create(place="test_place", goal="test_goal",
-                                 needed_id=1, time="2010-11-20", description='test_description',
-                                 photo=image, person_id=1)
+                                 needed_id=1, time="2010-11-20", description='test_description', person_id=1)
         User.objects.create(username='test_user', password='test_password', email='test@mail.com')
 
     def test_category(self):
@@ -108,7 +105,6 @@ class ModelTest(django.test.TestCase):
         self.assertEqual(test_gathering.time.day, 20)
         self.assertEqual(test_gathering.time.month, 11)
         self.assertEqual(test_gathering.description, "test_description")
-        self.assertIsNotNone(test_gathering.photo)
         self.assertIsInstance(test_gathering, Gathering)
 
     def test_additional_info(self):

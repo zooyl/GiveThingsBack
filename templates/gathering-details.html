@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <header class="header--main-page">
+        <div class="slogan container container--90">
+            <div class="slogan--item">
+                <h1>
+                    Szczegoly zbiorki w "{{ details.place }}"
+                </h1>
+            </div>
+        </div>
+    </header>
+    <section class="help">
+        <h2></h2>
+        <div align="center">
+            <h1>Miejsce:</h1>
+            <h3>"{{ details.place }}"</h3>
+            <h1>Cel:</h1>
+            <h3>{{ details.goal }}</h3>
+            <h1>Co jest potzebne:</h1>
+            <h3>{{ details.needed.name }}</h3>
+            <h1>Kiedy:</h1>
+            <h3>{{ details.time }}</h3>
+            <h1>Opis:</h1>
+            <h3>{{ details.description }}</h3>
+        </div>
+    </section>
+{% endblock content %}

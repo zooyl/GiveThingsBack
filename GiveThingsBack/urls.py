@@ -50,4 +50,11 @@ urlpatterns = [
                   path('form/5', app.views.GiveawayForm5.as_view(), name='form5'),
                   path('form/6', app.views.GiveawayForm6.as_view(), name='form6'),
                   path('details/<int:id>', app.views.Details.as_view(), name='details'),
+                  path('foundation/', app.views.FoundationList.as_view(), name='foundation'),
+                  path('gathering/', app.views.Gathering1.as_view(),
+                       name='gathering'),
+                  path('gathering/2', app.views.Gathering2.as_view(),
+                       name='gathering2'),
+                  path('gathering/details/<int:id>', app.views.GatheringDetails.as_view(),
+                       name='gathering-details'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

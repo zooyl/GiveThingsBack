@@ -1,6 +1,6 @@
 from django.views import View
 from .forms import CustomUserCreationForm
-from .models import Category, Foundation, SiteUser, GiveAway
+from .models import Category, Foundation, SiteUser, GiveAway, Gathering
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.db.models import Sum
+from app.forms import GatheringForm1, GatheringForm2
 
 
 # Create your views here.
@@ -23,10 +24,11 @@ from django.db.models import Sum
 def landing_page(request):
     # it sum entire column, display it as a list. So values [0] print only number
     bags = list(GiveAway.objects.aggregate(Sum('bags')).values())[0]
+    gathering = Gathering.objects.count()
     foundation_count = GiveAway.objects.values('foundation_id').distinct().count()
     foundation = Foundation.objects.all()
     return render(request, "index.html", {'bags': bags, 'foundation_count': foundation_count,
-                                          'foundation': foundation})
+                                          'foundation': foundation, 'gathering': gathering})
 
 
 class SignUp(View):
@@ -84,8 +86,9 @@ class Home(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
+        gathering = Gathering.objects.filter(person_id=user.id).order_by('-time')
         site_user = SiteUser.objects.filter(user_id=user.id).order_by('-donation__status', '-donation__created')
-        return render(request, "summary.html", {'user': user, 'site': site_user})
+        return render(request, "summary.html", {'user': user, 'site': site_user, 'gathering': gathering})
 
 
 class Settings(LoginRequiredMixin, UpdateView):
@@ -245,3 +248,55 @@ class Details(LoginRequiredMixin, View):
         details.donation.save()
         success_arch = "Darowizna zarchiwizowana"
         return render(request, 'success.html', {'success_arch': success_arch})
+
+
+class FoundationList(View):
+
+    def get(self, request):
+        foundation = Foundation.objects.order_by('name')
+        return render(request, 'foundation_list.html', {'foundation': foundation})
+
+
+class Gathering1(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        form = GatheringForm1
+        return render(request, 'gathering.html', {'form': form})
+
+    def post(self, request):
+        form = GatheringForm1(request.POST)
+        if form.is_valid():
+            place = form.cleaned_data['place']
+            request.session['place'] = place
+            goal = form.cleaned_data['goal']
+            request.session['goal'] = goal
+            needed = form.cleaned_data['needed']
+            request.session['needed'] = needed.id
+            return redirect('gathering2')
+        return render(request, 'gathering.html', {'form': form})
+
+
+class Gathering2(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        form = GatheringForm2
+        return render(request, 'gathering2.html', {'form': form})
+
+    def post(self, request):
+        form = GatheringForm2(request.POST)
+        if form.is_valid():
+            Gathering.objects.create(place=request.session.get('place'), goal=request.session.get('goal'),
+                                     needed_id=request.session.get('needed'), time=form.cleaned_data['time'],
+                                     description=form.cleaned_data['description'], person_id=request.user.id)
+            return redirect('home')
+        return render(request, 'gathering2.html', {'form': form})
+
+
+class GatheringDetails(LoginRequiredMixin, View):
+    login_url = 'login'
+
+    def get(self, request, id):
+        details = Gathering.objects.get(id=id)
+        return render(request, "gathering-details.html", {'details': details})

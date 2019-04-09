@@ -1,6 +1,7 @@
 import django.forms as forms
 from django.core.validators import EmailValidator
 from django.contrib.auth.models import User
+from app.models import Gathering
 import re
 
 
@@ -29,3 +30,15 @@ class CustomUserCreationForm(forms.Form):
         if duplicate_users.exists():
             raise forms.ValidationError("Taki adres e-mail juz istnieje")
         return data
+
+
+class GatheringForm1(forms.ModelForm):
+    class Meta:
+        model = Gathering
+        fields = ['place', 'goal', 'needed']
+
+
+class GatheringForm2(forms.ModelForm):
+    class Meta:
+        model = Gathering
+        fields = ['time', 'description']

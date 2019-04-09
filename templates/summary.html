@@ -1,17 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <header class="header--main-page">
-        <div class="slogan container container--90">
-            <div class="slogan--item">
-                <h1>
-                    Witaj {{ user }}!<br/>
-                    Ponizej znajdziesz liste swoich statystyk
-                </h1>
-            </div>
-        </div>
-    </header>
     <section class="help">
-        <h2>Komu pomogles?</h2>
+        <h2>Wsparte fundacje</h2>
         <div class="help--slides active" data-id="1">
             <p>Oto lista wszystkich Twoich zorganizowanych zbiorek oraz oddanych rzeczy</p>
             <ul class="help--slides-items">
@@ -43,6 +33,36 @@
                 {% endif %}
             </li>
             </ul>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="help">
+        <h2>Zorganizowane zbiorki</h2>
+        <div class="help--slides active" data-id="1">
+            <p>Lista wszystkich zorganizowanych przez Ciebie zbiorek</p>
+            <ul class="help--slides-items">
+                <li>
+                    <h1>Miejsce</h1>
+                    <h1>Cel</h1>
+                    <h1>Co jest potrzebne</h1>
+                </li>
+            </ul>
+            {% for j in gathering %}
+                <ul class="help--slides-items">
+                    <li>
+                        <div class="col">
+                            <a href="/gathering/details/{{ j.id }}">
+                                <div class="title">{{ j.place }}</div>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <div class="title">{{ j.goal }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="title">{{ j.needed }}</div>
+                        </div>
+                    </li>
+                </ul>
             {% endfor %}
         </div>
     </section>
