@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
@@ -128,8 +128,8 @@ LOGOUT_REDIRECT_URL = 'landing-page'
 
 # LOCAL SETTINGS
 # LOCAL DB
-# from GiveThingsBack.local_settings import DATABASES
-# from GiveThingsBack.local_settings import SECRET_KEY
+from GiveThingsBack.local_settings import DATABASES
+from GiveThingsBack.local_settings import SECRET_KEY
 
 # Email Service:
 # It won't work until you setup your e-mail and password correctly and if user is not in database
@@ -144,7 +144,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL')  # change to 'email' and uncomment 138 line (for local)
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")  # change to 'email_pass' and uncomment 138 line (for local)
 
-SECRET_KEY = os.environ.get("GTB_SECRET_KEY")
+# SECRET_KEY = os.environ.get("GTB_SECRET_KEY")  # uncomment 132 line to use SECRET_KEY from local settings
 
 # Heroku settings
 django_heroku.settings(locals())
