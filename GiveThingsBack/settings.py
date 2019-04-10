@@ -128,21 +128,23 @@ LOGOUT_REDIRECT_URL = 'landing-page'
 
 # LOCAL SETTINGS
 # LOCAL DB
-from GiveThingsBack.local_settings import DATABASES
-from GiveThingsBack.local_settings import SECRET_KEY
+# from GiveThingsBack.local_settings import DATABASES
+# from GiveThingsBack.local_settings import SECRET_KEY
 
 # Email Service:
 # It won't work until you setup your e-mail and password correctly and if user is not in database
 # Change "EMAIL_HOST" if you are using other services than google
 
-from .local_settings import email, email_pass
+# from .local_settings import email, email_pass
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = email
-EMAIL_HOST_PASSWORD = email_pass
+EMAIL_HOST_USER = os.environ.get('EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+
+SECRET_KEY = os.environ.get("GTB_SECRET_KEY")
 
 # Heroku settings
 django_heroku.settings(locals())
