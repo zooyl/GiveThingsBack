@@ -43,7 +43,7 @@ class SiteUser(models.Model):
     city = models.CharField(max_length=128, blank=False)
     postal = models.TextField(max_length=32, blank=False)
     phone = models.IntegerField(null=False)
-    date = models.DateField(null=True)
+    date = models.DateField(null=False)
     time = models.TimeField(null=True)
     details = models.TextField(max_length=256, blank=True)
 
