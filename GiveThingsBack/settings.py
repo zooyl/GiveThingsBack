@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
@@ -141,8 +141,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL')
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+EMAIL_HOST_USER = os.environ.get('EMAIL')  # change to 'email' and uncomment 138 line (for local)
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")  # change to 'email_pass' and uncomment 138 line (for local)
 
 SECRET_KEY = os.environ.get("GTB_SECRET_KEY")
 
