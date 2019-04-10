@@ -261,8 +261,13 @@ class Gathering1(LoginRequiredMixin, View):
     login_url = "login"
 
     def get(self, request):
-        form = GatheringForm1
-        return render(request, 'gathering.html', {'form': form})
+        user = request.user
+        site = SiteUser.objects.filter(user_id=user.id)
+        if site.exists():
+            form = GatheringForm1
+            return render(request, 'gathering.html', {'form': form})
+        error = "Musisz miec oddana przynajmniej jedna rzecz"
+        return render(request, 'index.html', {'error': error})
 
     def post(self, request):
         form = GatheringForm1(request.POST)

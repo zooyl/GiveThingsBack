@@ -43,5 +43,5 @@ class GatheringForm2(forms.ModelForm):
         model = Gathering
         fields = ['time', 'description']
         widgets = {
-            'time': forms.DateField()
+            'time': forms.DateInput(attrs={'placeholder': 'rok-miesiac-dzien'})
         }
