@@ -39,8 +39,9 @@ class GatheringForm1(forms.ModelForm):
 
 
 class GatheringForm2(forms.ModelForm):
-    time = forms.DateField(required=True, widget=forms.DateField)
-
     class Meta:
         model = Gathering
         fields = ['time', 'description']
+        widgets = {
+            'time': forms.DateField()
+        }
