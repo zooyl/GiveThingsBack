@@ -73,7 +73,7 @@ class ModelTest(django.test.TestCase):
 
         AdditionalInfo.objects.create(rules="rules_test", policy="policy_test", instruction="instructions_test")
         AdditionalInfo.objects.create(instruction="instructions_test")
-        SiteUser.objects.create(user_id=1, donation_id=1)
+        SiteUser.objects.create(user_id=1, donation_id=1, phone=1241231, date='2019-03-30')
         Gathering.objects.create(place="test_place", goal="test_goal",
                                  needed_id=1, time="2010-11-20", description='test_description', person_id=1)
         User.objects.create(username='test_user', password='test_password', email='test@mail.com')

@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+echo "---------------------------------------------------"
+echo "This script will install virtual environment,"
+echo "Set it up and install packages to run this project"
+echo "One key note:"
+echo "It will not install Python, Postgresql and Docker"
+echo "*docker-compose included in requirements*"
+echo "---------------------------------------------------"
+read -p "Click ""ENTER"" continue."
+echo "Installing virtual environment..."
+sudo apt install virtualenv
+echo "---------------------------------------------------"
+echo "Creating virtual environment in current directory"
+echo "---------------------------------------------------"
+virtualenv -p python3 venv
+# pip install -r requirements.txt
+sky-venv/bin/pip install -r requirements.txt
+source ./venv/bin/activate
+echo "---------------------------------------------------"
+echo "Installation completed"
+echo "---------------------------------------------------"
+echo "Make sure 'local_settings.py' is configured!"
+echo "---------------------------------------------------"
+read -r -p "Do you want to start server? [Y/n] " response
+echo
+response=${response,,} # tolower
+if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
+echo "---------------------------------------------------"
+echo "Making migrations"
+echo "---------------------------------------------------"
+python manage.py migrate
+echo "---------------------------------------------------"
+echo "Collecting static files"
+echo "---------------------------------------------------"
+python manage.py collectstatic
+echo "---------------------------------------------------"
+echo "Running Tests"
+echo "---------------------------------------------------"
+python manage.py test
+echo "---------------------------------------------------"
+echo "Populating database"
+echo "---------------------------------------------------"
+python manage.py loaddata sample.json
+echo "---------------------------------------------------"
+echo "Running Server"
+echo "By default there are two users:"
+echo "'super-user@gtb.com' with password 'Mkonjibhu1!'"
+echo "'wiyayoh@digital-email.com' with password 'Mkonjibhu1!'"
+python manage.py runserver
+fi
+if [[ $response =~ ^(no|n| ) ]] || [[ -z $response ]]; then
+exit
+fi
