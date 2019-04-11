@@ -15,7 +15,7 @@ echo "Creating virtual environment in current directory"
 echo "---------------------------------------------------"
 virtualenv -p python3 venv
 # pip install -r requirements.txt
-sky-venv/bin/pip install -r requirements.txt
+venv/bin/pip install -r requirements.txt
 source ./venv/bin/activate
 echo "---------------------------------------------------"
 echo "Installation completed"
@@ -42,6 +42,9 @@ echo "---------------------------------------------------"
 echo "Populating database"
 echo "---------------------------------------------------"
 python manage.py loaddata sample.json
+echo "---------------------------------------------------"
+echo "Please configure e-mail service in settings.py"
+echo "otherwise you wont be able to register new users"
 echo "---------------------------------------------------"
 echo "Running Server"
 echo "By default there are two users:"
