@@ -16,7 +16,7 @@ Pillow==5.4.1
 psycopg2==2.8.1
 psycopg2-binary==2.8.1
 pytz==2018.9
-PyYAML==3.13
+PyYAML==5.4
 requests==2.20.1
 six==1.12.0
 texttable==0.9.1
